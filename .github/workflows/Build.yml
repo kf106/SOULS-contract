@@ -1,0 +1,27 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v2
+
+      - name: Install modules
+        run: npm install
+
+      - name: Lint Solidity Files
+        run: npm run lint:sol
+
+      - name: Lint JavaScript Files
+        run: npm run lint:js
+
+      - name: Compile
+        run: npm run compile --force
