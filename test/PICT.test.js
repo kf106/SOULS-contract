@@ -1,7 +1,6 @@
 import { deployPICT } from './utils/deploy';
 import { Q, tokenURI, tokenIMG, base64Out } from './utils/consts';
 import { web3 } from 'hardhat';
-import { keccak256 } from 'keccak256';
 import chai from 'chai';
 import { solidity } from 'ethereum-waffle';
 chai.use(solidity);
@@ -92,7 +91,6 @@ contract('PICT', function (accounts) {
       const b64String = await contract.tokenB64(new BN('1'));
       expect(b64String).to.equal(base64Out);
     });
-
   });
 
   describe('Level up should', () => {
@@ -113,14 +111,14 @@ contract('PICT', function (accounts) {
 
     it('revert with non-existent token', async () => {
       await expect(contract.tokenLevel(new BN('2'))).to.be.revertedWith(
-        'ERC721Portrait: tokenLevel query for nonexistent token'
+        'ERC721Portrait: tokenLevel query for nonexistent token',
       );
     });
 
     it('remain at level 0 with failed pow string', async () => {
-      const attempt = await (contract.levelUp(
+      await (contract.levelUp(
         new BN('1'),
-        '0xda5a1013223d59abc345772238bf60b901240665fec85a7405bcb95b255ae9d7'
+        '0xda5a1013223d59abc345772238bf60b901240665fec85a7405bcb95b255ae9d7',
       ));
       const result = await (contract.tokenLevel(new BN('1')));
       expect(result.toString()).to.equal('0');
@@ -135,12 +133,11 @@ contract('PICT', function (accounts) {
 
     it('raise level with the right string', async () => {
       for (let i = 0; i < 10; i++) {
-        const rndHx = '0x' + genRanHex(64)
-        const result = await (contract.levelUp( new BN('1'), rndHx ));
+        const rndHx = '0x' + genRanHex(64);
+        const result = await (contract.levelUp(new BN('1'), rndHx));
         const lvl = result.logs[0].args[1];
-        console.log(rndHx + " " + lvl.toString());
+        console.log(rndHx + ' ' + lvl.toString());
       }
     });
-
   });
 });
