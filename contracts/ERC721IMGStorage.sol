@@ -77,27 +77,6 @@ abstract contract ERC721IMGStorage is ERC721 {
     }
 
     /* test function - delete later */
-    function test(uint256 tokenId, bytes memory incantation) public view returns (uint256) {
-        require(_exists(tokenId), "ERC721Portrait: levelUp query for nonexistent token");
-        uint256 _tokenLevel = _tokenLevels[tokenId];
-        bytes32 _target = (_tokenHashes[tokenId] >> 8);
-        bytes32 _hash = keccak256(incantation);
-        uint _match = clo(_hash ^ _target);
-        return (_match);
-    }
-    /* test function - delete later */
-    function test2(uint256 tokenId, bytes memory incantation) public view returns (string memory) {
-        require(_exists(tokenId), "ERC721Portrait: levelUp query for nonexistent token");
-        uint256 _tokenLevel = _tokenLevels[tokenId];
-        bytes32 _target = (_tokenHashes[tokenId] >> 8);
-        bytes32 _hash = keccak256(incantation);
-        bytes32 _match = _hash ^ _target;
-        bytes32 _mask = 0x0000000000000000000000000000000000000000000000000000000000000001;
-        bytes32 _and = _match & _mask;
-        return bytes32ToString(_and);
-    }
-
-    /* test function - delete later */
     function test3(uint256 tokenId, bytes memory incantation) public view returns (uint256) {
         require(_exists(tokenId), "ERC721Portrait: levelUp query for nonexistent token");
         uint256 _tokenLevel = _tokenLevels[tokenId];
@@ -105,7 +84,6 @@ abstract contract ERC721IMGStorage is ERC721 {
         bytes32 _hash = keccak256(incantation);
         uint256 _match = clo(_hash ^ _target);
         return _match;
-
     }
 
     /**
