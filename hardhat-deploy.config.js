@@ -11,10 +11,12 @@ require("solidity-coverage");
 require('dotenv-safe').config();
 
 const { 
+    ROPSTEN_API_URL, 
     RINKEBY_API_URL, 
     MAINNET_API_URL, 
     MUMBAI_API_URL,
     POLYGON_API_URL,
+    ROPSTEN_PRIVATE_KEY, 
     RINKEBY_PRIVATE_KEY, 
     MAINNET_PRIVATE_KEY, 
     MUMBAI_PRIVATE_KEY, 
@@ -41,6 +43,10 @@ module.exports = {
       url: 'http://127.0.0.1:8555',
       gas: 0xfffffffffff,
       gasPrice: 0x01,
+    },
+    ropsten: {
+         url: ROPSTEN_API_URL,
+         accounts: [`0x${ROPSTEN_PRIVATE_KEY}`]
     },
     rinkeby: {
          url: RINKEBY_API_URL,

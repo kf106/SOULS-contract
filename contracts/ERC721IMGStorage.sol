@@ -76,16 +76,6 @@ abstract contract ERC721IMGStorage is ERC721 {
         return bytes32ToString(_tokenHashes[tokenId]);
     }
 
-    /* test function - delete later */
-    function test3(uint256 tokenId, bytes memory incantation) public view returns (uint256) {
-        require(_exists(tokenId), "ERC721Portrait: levelUp query for nonexistent token");
-        uint256 _tokenLevel = _tokenLevels[tokenId];
-        bytes32 _target = (_tokenHashes[tokenId] >> 8);
-        bytes32 _hash = keccak256(incantation);
-        uint256 _match = clo(_hash ^ _target);
-        return _match;
-    }
-
     /**
      * @dev function to return level of image
      */

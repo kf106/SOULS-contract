@@ -52,9 +52,9 @@ contract('PICT', function (accounts) {
       expect(await contract.getMintingPrice()).to.be.a.bignumber.to.equal(new BN('0'));
     });
 
-    it('have minting price of 0.001 eth after minting', async () => {
+    it('have minting price of 0.0001 eth after minting', async () => {
       await mintTokenHelper(contract, customer, tokenURI, tokenIMG, (new BN('0')));
-      expect(await contract.getMintingPrice()).to.be.a.bignumber.to.equal(Q(15).mul(new BN('1')));
+      expect(await contract.getMintingPrice()).to.be.a.bignumber.to.equal(Q(14).mul(new BN('1')));
     });
 
     it('deployer balance increases on minting', async () => {
@@ -132,11 +132,14 @@ contract('PICT', function (accounts) {
     });
 
     it('raise level with the right string', async () => {
-      for (let i = 0; i < 10; i++) {
+      let currentLvl = await (contract.tokenLevel(new BN('1')));
+      for (let i = 0; i < 30; i++) {
         const rndHx = '0x' + genRanHex(64);
         const result = await (contract.levelUp(new BN('1'), rndHx));
         const lvl = result.logs[0].args[1];
+        expect(currentLvl.lte(lvl));
         console.log(rndHx + ' ' + lvl.toString());
+        currentLvl = lvl;
       }
     });
   });
