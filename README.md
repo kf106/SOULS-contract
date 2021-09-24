@@ -1,6 +1,6 @@
 # PICT - the Social Media Portrait NFT
-[![build](https://github.com/kf106/PICT-Contracts/actions/workflows/Build.yml/badge.svg)](https://github.com/kf106/PICT/actions/workflows/Build.yml)
-[![tests](https://github.com/kf106/PICT-Contracts/actions/workflows/Tests.yml/badge.svg)](https://github.com/kf106/PICT/actions/workflows/Tests.yml)
+[![build](https://github.com/kf106/PICT-contract/actions/workflows/Build.yml/badge.svg)](https://github.com/kf106/PICT-contract/actions/workflows/Build.yml)
+[![tests](https://github.com/kf106/PICT-contract/actions/workflows/Tests.yml/badge.svg)](https://github.com/kf106/PICT-contract/actions/workflows/Tests.yml)
 
 
 The Social Media Portrait Token (PICT) is an NFT contract based on a modification of the OpenZeppelin ERC721 implementation.
