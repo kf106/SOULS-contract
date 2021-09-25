@@ -14,14 +14,14 @@ abstract contract ERC721IMGStorage is ERC721 {
     // Optional mapping for token URIs
     mapping(uint256 => string) private _tokenURIs;
     mapping(uint256 => bytes) private _tokenIMGs;
-    mapping(uint256 => bytes32) private _tokenHashes;
+    mapping(uint256 => bytes32) private _tokenSouls;
     mapping(uint256 => uint256) private _tokenLevels;
 
     /**
      * @dev See {IERC721Metadata-tokenURI}.
      */
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
-        require(_exists(tokenId), "ERC721URIStorage: tokenURI query for nonexistent token");
+        require(_exists(tokenId), "PICT: tokenURI query for nonexistent token");
         return _tokenURIs[tokenId];
     }
 
@@ -29,7 +29,7 @@ abstract contract ERC721IMGStorage is ERC721 {
      * @dev function to return base64 encoded string of image
      */
     function tokenB64(uint256 tokenId) public view returns (string memory) {
-        require(_exists(tokenId), "ERC721Portrait: tokenB64 query for nonexistent token");
+        require(_exists(tokenId), "PICT: tokenB64 query for nonexistent token");
         bytes memory _tokenIMG = _tokenIMGs[tokenId];
         return string(encodeAsBase64(abi.encodePacked(_tokenIMG)));
     }
@@ -38,7 +38,7 @@ abstract contract ERC721IMGStorage is ERC721 {
      * @dev function to return bytes of image
      */
     function tokenIMG(uint256 tokenId) public view returns (bytes memory) {
-        require(_exists(tokenId), "ERC721Portrait: tokenIMG query for nonexistent token");
+        require(_exists(tokenId), "PICT: tokenIMG query for nonexistent token");
         bytes memory _tokenIMG = _tokenIMGs[tokenId];
         return bytes(abi.encodePacked(_tokenIMG));
     }
@@ -46,7 +46,7 @@ abstract contract ERC721IMGStorage is ERC721 {
     // Returns a hash of the token ID concatenated with the block in
     // which it was minted, which could be used as a random stats
     // generator for the token if it were to be used in a game.
-    // Note that this is not truly random, so sophisticated users could
+    // Note that this is not truly random, so sophisticated users can
     // exploit the system by submitting their minting request just at the
     // right time.
 
@@ -71,16 +71,19 @@ abstract contract ERC721IMGStorage is ERC721 {
         }
     }
 
-    function tokenStats(uint256 tokenId) public view returns (string memory) {
-        require(_exists(tokenId), "ERC721URIStorage: tokenStats query for nonexistent token");
-        return bytes32ToString(_tokenHashes[tokenId]);
+    /**
+     * @dev function to return the soul of the token
+    */
+    function tokenSoul(uint256 tokenId) public view returns (string memory) {
+        require(_exists(tokenId), "PICT: tokenSoul query for nonexistent token");
+        return bytes32ToString(_tokenSouls[tokenId]);
     }
 
     /**
      * @dev function to return level of image
      */
     function tokenLevel(uint256 tokenId) public view returns (uint256) {
-        require(_exists(tokenId), "ERC721Portrait: tokenLevel query for nonexistent token");
+        require(_exists(tokenId), "PICT: tokenLevel query for nonexistent token");
         return _tokenLevels[tokenId];
     }
 
@@ -105,14 +108,12 @@ abstract contract ERC721IMGStorage is ERC721 {
     event LevelUp(uint256 _tokenId, uint256 _level);
 
     function _levelUp(uint256 tokenId, bytes memory incantation) internal virtual returns (uint256) {
-        require(_exists(tokenId), "ERC721Portrait: levelUp query for nonexistent token");
+        require(_exists(tokenId), "PICT: levelUp query for nonexistent token");
         uint256 _tokenLevel = _tokenLevels[tokenId];
-        bytes32 _target = (_tokenHashes[tokenId] >> 1);
+        bytes32 _target = (_tokenSouls[tokenId]);
         uint256 _result = clo((keccak256(incantation) ^ _target));
-        bool _success = false;
         if (_result > _tokenLevel) {
             _tokenLevels[tokenId] = _result;
-            _success = true;
         }
         emit LevelUp(tokenId, _tokenLevels[tokenId]);
         return _tokenLevels[tokenId];
@@ -130,10 +131,10 @@ abstract contract ERC721IMGStorage is ERC721 {
         string memory _tokenURI,
         bytes memory _tokenIMG
     ) internal virtual {
-        require(_exists(tokenId), "ERC721URIStorage: attempted to set URI of nonexistent token");
+        require(_exists(tokenId), "PICT: attempted to set URI of nonexistent token");
         _tokenURIs[tokenId] = _tokenURI;
         _tokenIMGs[tokenId] = _tokenIMG;
-        _tokenHashes[tokenId] = keccak256(abi.encode(tokenId, blockhash(block.number)));
+        _tokenSouls[tokenId] = keccak256(abi.encodePacked(tokenId, blockhash(block.number - 1)));
         // start at level 0
         _tokenLevels[tokenId] = 0;
     }

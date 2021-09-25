@@ -19,7 +19,7 @@ contract PICT is ERC721IMGStorage, ReentrancyGuard {
     constructor() ERC721("Picture Token", "PICT") {
         owner = payable(msg.sender);
         maxTokens = 100000;
-        _basePrice = 10**14;
+        _basePrice = 10**15;
     }
 
     function mintToken(string memory tokenURI, bytes memory tokenIMG) public payable nonReentrant returns (uint256) {

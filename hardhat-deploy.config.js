@@ -44,6 +44,17 @@ module.exports = {
       gas: 0xfffffffffff,
       gasPrice: 0x01,
     },
+    bsc_mainnet: {
+      chainId: "0x38",
+      url: "https://bsc-dataseed.binance.org/",
+      accounts: [`0x${BINANCE_PRIVATE_KEY}`]
+    },
+    bsc_testnet: {
+      chainId: "0x61",
+      url: "https://data-seed-prebsc-1-s1.binance.org:8545"
+      accounts: [`0x${BINANCE_PRIVATE_KEY}`]
+    },
+
     ropsten: {
          url: ROPSTEN_API_URL,
          accounts: [`0x${ROPSTEN_PRIVATE_KEY}`]

@@ -56,7 +56,8 @@ As the data involved is signifcantly higher than most EVM contract, costs are eq
 
 | Action                  | Estimated gas required |
 |-------------------------|------------------------|
-| Deployment              | 2177632                |
-| Token minting (48x48)   | 4760249                |
+| Deployment              | 2285195                |
+| Token minting (24x24)   | 1509318                |
+| Levelling up            |   32410
 
-Visit the [Ethereum Gas Station](https://ethgasstation.info/calculatorTxV.php) to see what the current US dollar cost of that level of gas is. The last time I checked it was about $820 to mint a token, and 390$ to deploy the contract on the Ethereum mainnet.
+Visit the [Ethereum Gas Station](https://ethgasstation.info/calculatorTxV.php) to see what the current US dollar cost of that level of gas is. The last time I checked it was about $300 to mint a token, $15 to level up your token, and 650$ to deploy the contract on the Ethereum mainnet.
