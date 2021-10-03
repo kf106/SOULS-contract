@@ -1,7 +1,4 @@
 # SOULS - the Social Media Portrait NFT
-[![build](https://github.com/kf106/PICT-contract/actions/workflows/Build.yml/badge.svg)](https://github.com/kf106/PICT-contract/actions/workflows/Build.yml)
-[![tests](https://github.com/kf106/PICT-contract/actions/workflows/Tests.yml/badge.svg)](https://github.com/kf106/PICT-contract/actions/workflows/Tests.yml)
-
 
 The Social Media Portrait Token (SOULS) is an NFT contract based on a modification of the OpenZeppelin ERC721 implementation.
 
@@ -12,7 +9,7 @@ Yes, it's gas expensive. I wouldn't deploy it on Ethereum in a hurry.
 
 # Use cases
 
-To demonstrate the use of the contract, we have implemented the [Souls website](https://souls.fi), where the user can log in using their social media profile, and subsequently authorize and mint an NFT of their profile picture, their name, and headline or description.
+To demonstrate the use of the contract, we have implemented the [Souls website](https://souls.fi), where the user can log in using their social media profile, and subsequently authorize and mint an NFT of their profile SOULSure, their name, and headline or description.
 
 We have thought of the following other uses:
 
@@ -36,7 +33,7 @@ To ensure that there is real ownership beyond control of the individual NFT, I r
 
 # Implementation
 
-The PICT contract implements two new functions: tokenIMG and tokenB64. Data representing the payload of an image file is uploaded during the minting of the token. The contract subsequently exposes functions that allow the data to be retrieved  directly from the chain.
+The SOULS contract implements two new functions: tokenIMG and tokenB64. Data representing the payload of an image file is uploaded during the minting of the token. The contract subsequently exposes functions that allow the data to be retrieved  directly from the chain.
 
 ## tokenIMG(uint tokenIndex)
 Takes the index of a token as its argument, and returns a binary array containing the full data for the image, which can then be saved to a local file system as `filename.jpg`, and subsequently be used in applications or web pages.
