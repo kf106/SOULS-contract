@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.4;
+pragma solidity 0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
  */
 abstract contract ERC721IMGStorage is ERC721 {
     using Strings for uint256;
-    bytes private constant base64stdchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    bytes private constant BASE_64_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
     // Optional mapping for token URIs
     mapping(uint256 => string) private _tokenURIs;
@@ -21,15 +21,15 @@ abstract contract ERC721IMGStorage is ERC721 {
      * @dev See {IERC721Metadata-tokenURI}.
      */
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
-        require(_exists(tokenId), "PICT: tokenURI query for nonexistent token");
+        require(_exists(tokenId), "SOULS: tokenURI query for nonexistent token");
         return _tokenURIs[tokenId];
     }
 
     /**
      * @dev function to return base64 encoded string of image
      */
-    function tokenB64(uint256 tokenId) public view returns (string memory) {
-        require(_exists(tokenId), "PICT: tokenB64 query for nonexistent token");
+    function tokenB64(uint256 tokenId) external view returns (string memory) {
+        require(_exists(tokenId), "SOULS: tokenB64 query for nonexistent token");
         bytes memory _tokenIMG = _tokenIMGs[tokenId];
         return string(encodeAsBase64(abi.encodePacked(_tokenIMG)));
     }
@@ -37,8 +37,8 @@ abstract contract ERC721IMGStorage is ERC721 {
     /**
      * @dev function to return bytes of image
      */
-    function tokenIMG(uint256 tokenId) public view returns (bytes memory) {
-        require(_exists(tokenId), "PICT: tokenIMG query for nonexistent token");
+    function tokenIMG(uint256 tokenId) external view returns (bytes memory) {
+        require(_exists(tokenId), "SOULS: tokenIMG query for nonexistent token");
         bytes memory _tokenIMG = _tokenIMGs[tokenId];
         return bytes(abi.encodePacked(_tokenIMG));
     }
@@ -63,7 +63,7 @@ abstract contract ERC721IMGStorage is ERC721 {
         return string(bytesArray);
     }
 
-    function toByte(uint8 _uint8) public pure returns (bytes1) {
+    function toByte(uint8 _uint8) internal pure returns (bytes1) {
         if (_uint8 < 10) {
             return bytes1(_uint8 + 48);
         } else {
@@ -73,17 +73,17 @@ abstract contract ERC721IMGStorage is ERC721 {
 
     /**
      * @dev function to return the soul of the token
-    */
-    function tokenSoul(uint256 tokenId) public view returns (string memory) {
-        require(_exists(tokenId), "PICT: tokenSoul query for nonexistent token");
+     */
+    function tokenSoul(uint256 tokenId) external view returns (string memory) {
+        require(_exists(tokenId), "SOULS: tokenSoul query for nonexistent token");
         return bytes32ToString(_tokenSouls[tokenId]);
     }
 
     /**
      * @dev function to return level of image
      */
-    function tokenLevel(uint256 tokenId) public view returns (uint256) {
-        require(_exists(tokenId), "PICT: tokenLevel query for nonexistent token");
+    function tokenLevel(uint256 tokenId) external view returns (uint256) {
+        require(_exists(tokenId), "SOULS: tokenLevel query for nonexistent token");
         return _tokenLevels[tokenId];
     }
 
@@ -103,12 +103,12 @@ abstract contract ERC721IMGStorage is ERC721 {
     }
 
     /**
-     * @dev function to allow owner to attempt to raise level
+     * @dev Attempt to raise level using incantation
      */
     event LevelUp(uint256 _tokenId, uint256 _level);
 
     function _levelUp(uint256 tokenId, bytes memory incantation) internal virtual returns (uint256) {
-        require(_exists(tokenId), "PICT: levelUp query for nonexistent token");
+        require(_exists(tokenId), "SOULS: levelUp attempt for nonexistent token");
         uint256 _tokenLevel = _tokenLevels[tokenId];
         bytes32 _target = (_tokenSouls[tokenId]);
         uint256 _result = clo((keccak256(incantation) ^ _target));
@@ -131,7 +131,7 @@ abstract contract ERC721IMGStorage is ERC721 {
         string memory _tokenURI,
         bytes memory _tokenIMG
     ) internal virtual {
-        require(_exists(tokenId), "PICT: attempted to set URI of nonexistent token");
+        require(_exists(tokenId), "SOULS: attempted to set URI of nonexistent token");
         _tokenURIs[tokenId] = _tokenURI;
         _tokenIMGs[tokenId] = _tokenIMG;
         _tokenSouls[tokenId] = keccak256(abi.encodePacked(tokenId, blockhash(block.number - 1)));
@@ -197,9 +197,9 @@ abstract contract ERC721IMGStorage is ERC721 {
         uint256 c1 = (n >> 12) & 63;
         uint256 c2 = (n >> 6) & 63;
         uint256 c3 = (n) & 63;
-        b0 = base64stdchars[c0];
-        b1 = base64stdchars[c1];
-        b2 = base64stdchars[c2];
-        b3 = base64stdchars[c3];
+        b0 = BASE_64_CHARS[c0];
+        b1 = BASE_64_CHARS[c1];
+        b2 = BASE_64_CHARS[c2];
+        b3 = BASE_64_CHARS[c3];
     }
 }

@@ -1,18 +1,18 @@
-# PICT - the Social Media Portrait NFT
+# SOULS - the Social Media Portrait NFT
 [![build](https://github.com/kf106/PICT-contract/actions/workflows/Build.yml/badge.svg)](https://github.com/kf106/PICT-contract/actions/workflows/Build.yml)
 [![tests](https://github.com/kf106/PICT-contract/actions/workflows/Tests.yml/badge.svg)](https://github.com/kf106/PICT-contract/actions/workflows/Tests.yml)
 
 
-The Social Media Portrait Token (PICT) is an NFT contract based on a modification of the OpenZeppelin ERC721 implementation.
+The Social Media Portrait Token (SOULS) is an NFT contract based on a modification of the OpenZeppelin ERC721 implementation.
 
 # What does it do?
-PICT solves the problems of *integrity* and *persistence* for NFTs by storing the actual data of the icon on the blockchain. For ownership or licensing of the materials pointed to, you're still going to need a legal contract, or perhaps some kind of game integration.
+SOULS solves the problems of *integrity* and *persistence* for NFTs by storing the actual data of the icon on the blockchain. For ownership or licensing of the materials pointed to, you're still going to need a legal contract, or perhaps some kind of game integration.
 
 Yes, it's gas expensive. I wouldn't deploy it on Ethereum in a hurry.
 
 # Use cases
 
-To demonstrate the use of the contract, we have implemented the [PICT website](https://pict.fi), where the user can log in using their social media profile, and subsequently authorize and mint an NFT of their profile picture, their name, and headline or description.
+To demonstrate the use of the contract, we have implemented the [Souls website](https://souls.fi), where the user can log in using their social media profile, and subsequently authorize and mint an NFT of their profile picture, their name, and headline or description.
 
 We have thought of the following other uses:
 
@@ -54,10 +54,10 @@ Takes the index of a token as its argument, and returns a base64 encoded string 
 
 As the data involved is signifcantly higher than most EVM contract, costs are equivalently higher. We have estimated the following gas prices:
 
-| Action                  | Estimated gas required |
-|-------------------------|------------------------|
-| Deployment              | 2285195                |
-| Token minting (24x24)   | 1509318                |
-| Levelling up            |   32410
+| Action                  | Estimated Gas | EUR (est) |
+|-------------------------|---------------|-----------|
+| Deployment              | 2325094       | 550.32    |
+| Token minting (24x24)   | 1499300       | 354.86    |
+| Levelling up            |   32812       | 7.77      |
 
-Visit the [Ethereum Gas Station](https://ethgasstation.info/calculatorTxV.php) to see what the current US dollar cost of that level of gas is. The last time I checked it was about $300 to mint a token, $15 to level up your token, and 650$ to deploy the contract on the Ethereum mainnet.
+Visit the [Ethereum Gas Station](https://ethgasstation.info/calculatorTxV.php) to see what the current US dollar cost of that level of gas is. The last time I checked it was about 350€ to mint a token, 7€ to level up your token, and 550€ to deploy the contract on the Ethereum mainnet. Which is why I have deployed the contract on the Binance Smart Chain.

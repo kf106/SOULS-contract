@@ -1,6 +1,7 @@
-import { deployPICT } from './utils/deploy';
-import { Q, tokenURI, tokenIMG, base64Out, soulOut } from './utils/consts';
-import { web3, ethers } from 'hardhat';
+import { deploySOULS } from './utils/deploy';
+import { mine } from './utils/mine';
+import { Q, tokenURI, tokenIMG, base64Out } from './utils/consts';
+import { web3 } from 'hardhat';
 import chai from 'chai';
 import { solidity } from 'ethereum-waffle';
 chai.use(solidity);
@@ -20,22 +21,24 @@ async function mintTokenHelper (contract, minter, uri, img, price) {
   return response;
 }
 
-contract('PICT', function (accounts) {
+contract('SOULS', function (accounts) {
   describe('Should deploy and', () => {
-    let deployer, customer, contract;
+    let deployer, customer, charity, newCharity, contract;
 
     beforeEach(async () => {
       deployer = accounts[0];
       customer = accounts[1];
-      contract = await deployPICT(deployer);
+      charity = accounts[2];
+      newCharity = accounts[3];
+      contract = await deploySOULS(charity, deployer);
     });
 
     it('return correct name', async () => {
-      expect(await contract.name()).to.equal('Picture Token');
+      expect(await contract.name()).to.equal('Social Media Profile Token');
     });
 
     it('return correct symbol', async () => {
-      expect(await contract.symbol()).to.equal('PICT');
+      expect(await contract.symbol()).to.equal('SOULS');
     });
 
     it('initially have no tokens', async () => {
@@ -57,12 +60,25 @@ contract('PICT', function (accounts) {
       expect(await contract.getMintingPrice()).to.be.a.bignumber.to.equal(Q(15).mul(new BN('1')));
     });
 
-    it('deployer balance increases on minting', async () => {
-      const balance = new BN(await web3.eth.getBalance(deployer));
+    it('have charity set correctly', async () => {
+      expect(await contract.getCharity()).to.equal(charity);
+    });
+
+    it('be able to change charity if owner', async () => {
+      await contract.setCharity(newCharity, {from: deployer});
+      expect(await contract.getCharity()).to.equal(newCharity);
+    });
+
+    it('deployer and charity balance increases on minting', async () => {
+      const deployerBalance = new BN(await web3.eth.getBalance(deployer));
+      const charityBalance = new BN(await web3.eth.getBalance(charity));
       await mintTokenHelper(contract, customer, tokenURI, tokenIMG, (new BN('0')));
       const price = new BN(await contract.getMintingPrice());
       await mintTokenHelper(contract, customer, tokenURI, tokenIMG, price);
-      expect(await web3.eth.getBalance(deployer)).to.be.a.bignumber.to.equal(balance.add(price));
+      const newDeployerBalance = await web3.eth.getBalance(deployer);
+      const newCharityBalance = await web3.eth.getBalance(charity);
+      expect(newDeployerBalance).to.be.a.bignumber.to.equal(deployerBalance.add(price.divn(2)));
+      expect(newCharityBalance).to.be.a.bignumber.to.equal(charityBalance.add(price.divn(2)));
       expect(await contract.totalSupply()).to.be.a.bignumber.to.equal(new BN('2'));
     });
   });
@@ -73,7 +89,7 @@ contract('PICT', function (accounts) {
     beforeEach(async () => {
       deployer = accounts[0];
       customer = accounts[1];
-      contract = await deployPICT(deployer);
+      contract = await deploySOULS(deployer);
       const price = new BN(await contract.getMintingPrice());
       await mintTokenHelper(contract, customer, tokenURI, tokenIMG, price);
     });
@@ -108,7 +124,7 @@ contract('PICT', function (accounts) {
     beforeEach(async () => {
       deployer = accounts[0];
       customer = accounts[1];
-      contract = await deployPICT(deployer);
+      contract = await deploySOULS(deployer);
       const price = new BN(await contract.getMintingPrice());
       await mintTokenHelper(contract, customer, tokenURI, tokenIMG, price);
     });
@@ -120,13 +136,8 @@ contract('PICT', function (accounts) {
 
     it('revert with non-existent token', async () => {
       await expect(contract.tokenLevel(new BN('2'))).to.be.revertedWith(
-        'PICT: tokenLevel query for nonexistent token',
+        'SOULS: tokenLevel query for nonexistent token',
       );
-    });
-
-    it('return correct soul string', async () => {
-      const soulString = await contract.tokenSoul(new BN('1'));
-      expect(soulString).to.equal(soulOut);
     });
 
     it('remain at level same with failed pow number', async () => {
@@ -134,13 +145,13 @@ contract('PICT', function (accounts) {
         new BN('1'),
         '0x1853e13740e6dc4b93b65d0a684e1ccf994afae343a1bf7738291b6299ec9535',
       ));
-      const result_1 = await (contract.tokenLevel(new BN('1')));
+      const result1 = await (contract.tokenLevel(new BN('1')));
       await (contract.levelUp(
         new BN('1'),
         '0x1853e13740e6dc4b93b65d0a684e1ccf994afae343a1bf7738291b6299ec9535',
       ));
-      const result_2 = await (contract.tokenLevel(new BN('1')));
-      expect(result_2.toString()).to.equal(result_1.toString());
+      const result2 = await (contract.tokenLevel(new BN('1')));
+      expect(result2.toString()).to.equal(result1.toString());
     });
 
     it('raise level with the right string', async () => {
@@ -153,6 +164,23 @@ contract('PICT', function (accounts) {
         console.log(rndHx + ' ' + lvl.toString());
         currentLvl = lvl;
       }
+    });
+
+    it('be mineable', async () => {
+      const soul = await contract.tokenSoul(new BN('1'));
+      let result;
+      for (let i = 0; i < 10000; i++) {
+        const rndHx = genRanHex(64);
+        result = mine(soul, rndHx);
+        if (result > 6) {
+          console.log('Levelling up with ' + rndHx + ' which gives level ' + result);
+          await (contract.levelUp(new BN('1'), '0x' + rndHx));
+          break;
+        }
+      }
+      const level = await (contract.tokenLevel(new BN('1')));
+      console.log('Level: ' + level.toString());
+      expect(level.toString()).to.equal(result.toString());
     });
   });
 });

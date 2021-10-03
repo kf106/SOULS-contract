@@ -9,8 +9,6 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export const tokenURI =
   'https://ipfs.infura.io/ipfs/QmV7aM6j9G9r3QQp4tUCn7qFkR3P1EmTu3XiZwS7ypSG1Y';
 
-export const soulOut = 'b60bd5b23d4da3e1dc42bf9d52d652fca2eaf401ca4ef2290b0a32ce0a55245e';
-
 export const base64Out = [
   'Qk32BgAAAAAAADYAAAAoAAAAGAAAAOj///8BABgAAAAAA',
   'MAGAAAAAAAAAAA',

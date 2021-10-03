@@ -1,9 +1,11 @@
+const hre = require('hardhat');
+console.log("Charity: " + hre.network.config.charity);
 import { ethers } from 'hardhat';
 async function main () {
-  const pict = await ethers.getContractFactory('PICT');
+  const souls = await ethers.getContractFactory('SOULS');
   // Start deployment, returning a promise that resolves to a contract object
-  const Pict = await pict.deploy();
-  console.log('Contract deployed to address:', Pict.address);
+  const Souls = await souls.deploy(hre.network.config.charity);
+  console.log('Contract deployed to address:', Souls.address);
 }
 
 main()

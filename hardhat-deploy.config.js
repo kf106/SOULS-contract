@@ -16,20 +16,15 @@ const {
     MAINNET_API_URL, 
     MUMBAI_API_URL,
     POLYGON_API_URL,
+    BINANCE_MAINNET_PRIVATE_KEY, 
+    BINANCE_TESTNET_PRIVATE_KEY, 
     ROPSTEN_PRIVATE_KEY, 
     RINKEBY_PRIVATE_KEY, 
     MAINNET_PRIVATE_KEY, 
     MUMBAI_PRIVATE_KEY, 
     POLYGON_PRIVATE_KEY, 
-    ETHSCAN_API_KEY } = process.env;
-
-task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
-  const accounts = await hre.ethers.getSigners();
-
-  for (const account of accounts) {
-    console.log(account.address);
-  }
-});
+    ETHSCAN_API_KEY,
+    CHARITY } = process.env;
 
 module.exports = {
   defaultNetwork: "hardhat",
@@ -45,16 +40,14 @@ module.exports = {
       gasPrice: 0x01,
     },
     bsc_mainnet: {
-      chainId: "0x38",
       url: "https://bsc-dataseed.binance.org/",
-      accounts: [`0x${BINANCE_PRIVATE_KEY}`]
+      accounts: [`0x${BINANCE_MAINNET_PRIVATE_KEY}`]
     },
     bsc_testnet: {
-      chainId: "0x61",
-      url: "https://data-seed-prebsc-1-s1.binance.org:8545"
-      accounts: [`0x${BINANCE_PRIVATE_KEY}`]
+      url: "https://data-seed-prebsc-1-s1.binance.org:8545",
+      accounts: [`0x${BINANCE_TESTNET_PRIVATE_KEY}`],
+      charity: CHARITY
     },
-
     ropsten: {
          url: ROPSTEN_API_URL,
          accounts: [`0x${ROPSTEN_PRIVATE_KEY}`]
@@ -80,7 +73,7 @@ module.exports = {
     apiKey: ETHSCAN_API_KEY
   },
   solidity: {
-    version: "0.8.4",
+    version: "0.8.9",
     settings: {
       optimizer: {
         enabled: true,

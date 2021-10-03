@@ -1,5 +1,5 @@
-const PICT = artifacts.require('PICT');
+const SOULS = artifacts.require('SOULS');
 
-export async function deployPICT () {
-  return PICT.new();
+export async function deploySOULS (charity, deployer) {
+  return SOULS.new(charity, {from: deployer});
 }
