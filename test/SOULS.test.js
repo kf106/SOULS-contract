@@ -65,7 +65,7 @@ contract('SOULS', function (accounts) {
     });
 
     it('be able to change charity if owner', async () => {
-      await contract.setCharity(newCharity, {from: deployer});
+      await contract.setCharity(newCharity, { from: deployer });
       expect(await contract.getCharity()).to.equal(newCharity);
     });
 
@@ -84,12 +84,13 @@ contract('SOULS', function (accounts) {
   });
 
   describe('Token query should', () => {
-    let deployer, customer, contract;
+    let deployer, customer, contract, charity;
 
     beforeEach(async () => {
       deployer = accounts[0];
       customer = accounts[1];
-      contract = await deploySOULS(deployer);
+      charity = accounts[2];
+      contract = await deploySOULS(charity, deployer);
       const price = new BN(await contract.getMintingPrice());
       await mintTokenHelper(contract, customer, tokenURI, tokenIMG, price);
     });
@@ -118,13 +119,53 @@ contract('SOULS', function (accounts) {
     });
   });
 
-  describe('Level up should', () => {
-    let deployer, customer, contract;
+  describe('Tokens should', () => {
+    let deployer, customer, contract, charity;
 
     beforeEach(async () => {
       deployer = accounts[0];
       customer = accounts[1];
-      contract = await deploySOULS(deployer);
+      charity = accounts[2];
+      contract = await deploySOULS(charity, deployer);
+      const price = new BN(await contract.getMintingPrice());
+      await mintTokenHelper(contract, customer, tokenURI, tokenIMG, price);
+    });
+
+    it('be transferrable', async () => {
+      await contract.approve(charity, new BN('1'), { from: customer });
+      await contract.transferFrom(customer, charity, new BN('1'), { from: customer });
+      const newO = await (contract.ownerOf(new BN('1')));
+      expect(newO.toString()).to.equal(charity.toString());
+    });
+
+    it('claimable through approve', async () => {
+      await contract.approve(charity, new BN('1'), { from: customer });
+      await contract.transferFrom(customer, charity, new BN('1'), { from: charity });
+      const newO = await (contract.ownerOf(new BN('1')));
+      expect(newO.toString()).to.equal(charity.toString());
+    });
+
+    it('not be transferrable by others', async () => {
+      await contract.approve(charity, new BN('1'), { from: customer });
+      await expect(contract.transferFrom(
+        customer,
+        charity,
+        new BN('1'),
+        { from: deployer },
+      )).to.be.revertedWith(
+        'ERC721: transfer caller is not owner nor approved',
+      );
+    });
+  });
+
+  describe('Level up should', () => {
+    let deployer, customer, contract, charity;
+
+    beforeEach(async () => {
+      deployer = accounts[0];
+      customer = accounts[1];
+      charity = accounts[2];
+      contract = await deploySOULS(charity, deployer);
       const price = new BN(await contract.getMintingPrice());
       await mintTokenHelper(contract, customer, tokenURI, tokenIMG, price);
     });

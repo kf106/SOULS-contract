@@ -1,6 +1,8 @@
-const hre = require('hardhat');
-console.log("Charity: " + hre.network.config.charity);
 import { ethers } from 'hardhat';
+const hre = require('hardhat');
+
+console.log('Charity: ' + hre.network.config.charity);
+
 async function main () {
   const souls = await ethers.getContractFactory('SOULS');
   // Start deployment, returning a promise that resolves to a contract object
