@@ -7,6 +7,12 @@ SOULS solves the problems of *integrity* and *persistence* for NFTs by storing t
 
 Yes, it's gas expensive. I wouldn't deploy it on Ethereum in a hurry.
 
+It also provides a template for a unique pseudo-random number associated with each token. This allows third-party sites to create "stats" for each token.
+
+Finally, each token has a "level", which can be increased through proof-of-work by mining for special strings which raise the level. Once raised, levels cannot be lowered.
+
+This shows the amount of effort in the form of computing resources that have been put into the token that could, for example, be used to increase the perceived value of the token.
+
 # Use cases
 
 To demonstrate the use of the contract, we have implemented the [Souls website](https://souls.fi), where the user can log in using their social media profile, and subsequently authorize and mint an NFT of their profile SOULSure, their name, and headline or description.
@@ -18,7 +24,7 @@ We have thought of the following other uses:
 * Digital facsimiles of physical signatures
 * An interesting addition to a resume
 
-Feel free to suggest more to us, and I'll add them to the list! 
+Feel free to suggest more to me, and I'll add them to the list! 
 
 ### Persistence
 NFTs are, generally speaking, pointers to data that is stored elsewhere. If the pointer in the NFT (typically called the tokenURI) is to a file on a centrally controled server, then that file can be intentially removed by the server operators, or unintentionally disappear if the company paying for the server goes bankrupt or fails to pay the bills.
