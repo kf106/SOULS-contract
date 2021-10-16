@@ -13,7 +13,7 @@
     "deploy:rinkeby": "npx hardhat run scripts/deploy.js --config hardhat-deploy.config.js --network rinkeby",
     "deploy:ropsten": "npx hardhat run scripts/deploy.js --config hardhat-deploy.config.js --network ropsten",
     "deploy:bsc_testnet": "npx hardhat run scripts/deploy.js --config hardhat-deploy.config.js --network bsc_testnet",
-    "deploy:bsc_mainnet": "npx hardhat run scripts/deploy.js --config hardhat-deploy.config.js --network bsc_mainent",
+    "deploy:bsc_mainnet": "npx hardhat run scripts/deploy.js --config hardhat-deploy.config.js --network bsc_mainnet",
     "deploy:mumbai": "echo 'Not implemented'",
     "deploy:matic": "echo 'Not implemented'",
     "deploy:mainnet": "npx hardhat run scripts/deploy.js --config hardhat-deploy.config.js --network mainnet",

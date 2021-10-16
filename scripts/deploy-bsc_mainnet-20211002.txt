@@ -1,0 +1,6 @@
+> souls-contract@1.0.0 deploy:bsc_mainnet
+> npx hardhat run scripts/deploy.js --config hardhat-deploy.config.js --network bsc_mainnet
+
+Charity: 0x766c94a76F3652B85358DA0D5C039635e20c27d7
+Contract deployed to address: 0x40Ad58a55654A419692F63E4ae6a5918F72989e2
+

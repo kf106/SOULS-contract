@@ -24,6 +24,7 @@ const {
     MUMBAI_PRIVATE_KEY, 
     POLYGON_PRIVATE_KEY, 
     ETHSCAN_API_KEY,
+    BSCSCAN_API_KEY,
     CHARITY } = process.env;
 
 module.exports = {
@@ -41,7 +42,8 @@ module.exports = {
     },
     bsc_mainnet: {
       url: "https://bsc-dataseed.binance.org/",
-      accounts: [`0x${BINANCE_MAINNET_PRIVATE_KEY}`]
+      accounts: [`0x${BINANCE_MAINNET_PRIVATE_KEY}`],
+      charity: CHARITY
     },
     bsc_testnet: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545",
@@ -70,7 +72,7 @@ module.exports = {
     }
   },
   etherscan: {
-    apiKey: ETHSCAN_API_KEY
+    apiKey: BSCSCAN_API_KEY
   },
   solidity: {
     version: "0.8.9",

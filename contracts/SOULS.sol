@@ -21,8 +21,8 @@ contract SOULS is ERC721IMGStorage, ReentrancyGuard {
     }
 
     constructor(address charity_) ERC721("Social Media Profile Token", "SOULS") {
-        _owner = payable(msg.sender);
-        _charity = payable(charity_);
+        _owner = msg.sender;
+        _charity = charity_;
         _maxTokens = 10000000;
         _basePrice = 10**15;
     }
@@ -43,8 +43,8 @@ contract SOULS is ERC721IMGStorage, ReentrancyGuard {
         _setTokenURI(newItemId, tokenURI_, tokenIMG_);
         // Make the contract send half to the owner and half to the charity
         uint256 _amount = address(this).balance / 2;
-        payable(_owner).transfer(_amount);
-        payable(_charity).transfer(_amount);
+        require(payable(_owner).send(_amount), "SOULS: send to owner failed");
+        require(payable(_charity).send(_amount), "SOULS: send to charity failed");
         return newItemId;
     }
 
@@ -66,6 +66,11 @@ contract SOULS is ERC721IMGStorage, ReentrancyGuard {
     // Find the registered charity address
     function getCharity() external view returns (address) {
         return _charity;
+    }
+
+    // Find the registered charity address
+    function getOwner() external view returns (address) {
+        return _owner;
     }
 
     // Change the registered charity address
