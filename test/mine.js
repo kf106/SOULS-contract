@@ -1,9 +1,11 @@
-const keccak256 = require('keccak256');
+const keccak256 = require('js-sha3').keccak256;
 
+// xor two buffers (why is this not built in?)
 function xor (buf1, buf2) {
   return buf1.map((b, i) => b ^ buf2[i]);
 }
 
+// reverse pairs of octets because endianism is broken
 function swap (bytes) {
   const str = bytes.toString('hex');
   let spellStore = '';
@@ -15,6 +17,7 @@ function swap (bytes) {
   return Buffer.from(spellStore, 'hex');
 }
 
+// finds the bit at a given position in a byte
 function getBit (bitIndex, buf) {
   const byte = ~~(bitIndex / 8);
   const bit = bitIndex % 8;
@@ -23,6 +26,7 @@ function getBit (bitIndex, buf) {
   return result;
 }
 
+// loops through bits in a byte32 counting the number of leading bits
 function clo (target) {
   let i = 0;
   for (i; i < 256; i++) {
@@ -44,18 +48,23 @@ function mine (soul, incantation) {
 }
 
 // generate random hex string of length size
-const genRanHex = size => [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+function genRanHex (size) {
+  const result = [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+  return result;
+} 
 
 console.log('Starting mining');
 
 const soul = '951503ab956ad15f4006d702f5d40cc329e93a14f2df6a6b179e4c807cf20029';
 console.log('Mining: ' + soul);
 
-function mineNFT () {
+var mineNFT = function () {
   let bestResult = 0;
   let bestIncantation = 0;
-  for (let i = 0; i < 10000; i++) {
-    if ((i % 1000) === 0) { process.stdout.write('.'); }
+  for (let i = 0; i < 100000000000; i++) {
+    if ((i % 100000) === 0) { 
+      process.stdout.write('.'); 
+    }
     const rndHx = genRanHex(64);
     const result = mine(soul, rndHx);
     if (result > bestResult) {
