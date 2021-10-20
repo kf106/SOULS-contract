@@ -1,5 +1,5 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "extends" : [
     "standard",
     "plugin:promise/recommended"
@@ -61,6 +61,7 @@
     "promise/avoid-new": "off"
   },
   "parserOptions": {
-    "ecmaVersion": 2020
+    "ecmaVersion": 8,
+    "requireConfigFile": false
   }
 }
