@@ -1,4 +1,6 @@
 # SOULS - the Social Media Portrait NFT
+[![build](https://github.com/kf106/SOULS-contract/actions/workflows/Build.yml/badge.svg)](https://github.com/kf106/SOULS-contract/actions/workflows/Build.yml)
+[![tests](https://github.com/kf106/SOULS-contract/actions/workflows/Tests.yml/badge.svg)](https://github.com/kf106/SOULS-contract/actions/workflows/Tests.yml)
 
 The Social Media Portrait Token (SOULS) is an NFT contract based on a modification of the OpenZeppelin ERC721 implementation.
 
